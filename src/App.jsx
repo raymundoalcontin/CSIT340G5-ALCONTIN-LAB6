@@ -18,7 +18,7 @@ useEffect(() => {
     <SettingsContext value={{ largeText, setLargeText }}>
       <div className="bg-[#f5f5f5] font-light text-[#111]">
         <Notes />
-        <Info name="Juan Dela Cruz" />
+        <Info name="Raymundo C. Alcontin JR." />
       </div>
     </SettingsContext>
   )
