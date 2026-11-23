@@ -1,5 +1,4 @@
-
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import NoteCard from './NoteCard.jsx'
 
 const startingNotes = [
@@ -22,7 +21,8 @@ function Notes() {
     const saved = localStorage.getItem('notes')
     return saved ? JSON.parse(saved) : startingNotes
   })
-
+  const titleRef = useRef(null)
+  
   const [form, setForm] = useState({
     title: '',
     body: '',
@@ -41,6 +41,7 @@ function Notes() {
       console.log('draft saved:', form.title)
     }, 1000)
     return () => clearTimeout(id)
+    
   }, [form])
 
 
@@ -81,6 +82,8 @@ function Notes() {
       title: '',
       body: '',
     })
+    
+    titleRef.current.focus()
   }
 
   function handleDelete(id) {
@@ -103,7 +106,7 @@ function Notes() {
             placeholder="Search by title"
             value={search}
             onChange={(event) => setSearch(event.target.value)}
-            className="h-[52px] w-full border border-[#e6e6e6] px-4 text-lg outline-none placeholder:text-black/40 placeholder:italic focus:border-[#cf7d7d]"
+            className="h-13 w-full border border-[#e6e6e6] px-4 text-lg outline-none placeholder:text-black/40 placeholder:italic focus:border-[#cf7d7d]"
           />
         </div>
 
@@ -113,11 +116,13 @@ function Notes() {
           </p>
 
           <input
+          
+            ref={titleRef}
             name="title"
             placeholder="Title"
             value={form.title}
             onChange={handleChange}
-            className="h-[52px] w-full border border-[#e6e6e6] px-4 text-lg outline-none placeholder:text-black/40 placeholder:italic focus:border-[#cf7d7d]"
+            className="h-13 w-full border border-[#e6e6e6] px-4 text-lg outline-none placeholder:text-black/40 placeholder:italic focus:border-[#cf7d7d]"
           />
 
           <textarea
@@ -125,12 +130,12 @@ function Notes() {
             placeholder="Write your note"
             value={form.body}
             onChange={handleChange}
-            className="h-[120px] w-full resize-none py-3 border border-[#e6e6e6] px-4 text-lg outline-none placeholder:text-black/40 placeholder:italic focus:border-[#cf7d7d]"
+            className="h-30 w-full resize-none py-3 border border-[#e6e6e6] px-4 text-lg outline-none placeholder:text-black/40 placeholder:italic focus:border-[#cf7d7d]"
           />
 
           <button
             type="submit"
-            className="h-[50px] cursor-pointer bg-[#b83f45] text-[17px] font-normal text-white hover:bg-[#a33439]"
+            className="h-12.5 cursor-pointer bg-[#b83f45] text-[17px] font-normal text-white hover:bg-[#a33439]"
           >
             Add note
           </button>
