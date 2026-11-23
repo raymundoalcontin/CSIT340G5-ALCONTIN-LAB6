@@ -1,9 +1,9 @@
-import { useState } from 'react'
+
+import { useState, useEffect } from 'react'
 import NoteCard from './NoteCard.jsx'
 
 function Notes() {
   const [search, setSearch] = useState('')
-
   const [notes, setNotes] = useState([
     {
       id: 1,
@@ -16,6 +16,12 @@ function Notes() {
       body: 'Practice writing one handler for many inputs.',
     },
   ])
+
+
+    useEffect(() => {
+    localStorage.setItem('notes', JSON.stringify(notes))
+  }, [notes])
+
 
   const filteredNotes = notes.filter((note) =>
     note.title.toLowerCase().includes(search.toLowerCase())
