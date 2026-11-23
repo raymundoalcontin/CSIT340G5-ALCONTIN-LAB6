@@ -23,26 +23,38 @@ function Notes() {
     return saved ? JSON.parse(saved) : startingNotes
   })
 
+  const [form, setForm] = useState({
+    title: '',
+    body: '',
+  })
+
 
     useEffect(() => {
     localStorage.setItem('notes', JSON.stringify(notes))
   }, [notes])
+
+// time out / save to drafts
+
+  useEffect(() => {
+    const id = setTimeout(() => {
+      localStorage.setItem('draft', JSON.stringify(form))
+      console.log('draft saved:', form.title)
+    }, 1000)
+    return () => clearTimeout(id)
+  }, [form])
 
 
   const filteredNotes = notes.filter((note) =>
     note.title.toLowerCase().includes(search.toLowerCase())
   )
 
-  const [formData, setFormData] = useState({
-    title: '',
-    body: '',
-  })
+
 
   function handleChange(event) {
     const { name, value } = event.target
 
-    setFormData({
-      ...formData,
+    setForm({
+      ...form,
       [name]: value,
     })
   }
@@ -50,8 +62,8 @@ function Notes() {
   function handleSubmit(event) {
     event.preventDefault()
 
-    const title = formData.title.trim()
-    const body = formData.body.trim()
+    const title = form.title.trim()
+    const body = form.body.trim()
 
     if (!title || !body) {
       return
@@ -65,7 +77,7 @@ function Notes() {
 
     setNotes([...notes, newNote])
 
-    setFormData({
+    setForm({
       title: '',
       body: '',
     })
@@ -103,7 +115,7 @@ function Notes() {
           <input
             name="title"
             placeholder="Title"
-            value={formData.title}
+            value={form.title}
             onChange={handleChange}
             className="h-[52px] w-full border border-[#e6e6e6] px-4 text-lg outline-none placeholder:text-black/40 placeholder:italic focus:border-[#cf7d7d]"
           />
@@ -111,7 +123,7 @@ function Notes() {
           <textarea
             name="body"
             placeholder="Write your note"
-            value={formData.body}
+            value={form.body}
             onChange={handleChange}
             className="h-[120px] w-full resize-none py-3 border border-[#e6e6e6] px-4 text-lg outline-none placeholder:text-black/40 placeholder:italic focus:border-[#cf7d7d]"
           />
